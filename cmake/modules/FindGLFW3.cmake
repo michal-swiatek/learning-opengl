@@ -18,7 +18,7 @@
 # Cmake file from: https://github.com/daw42/glslcookbook
 
 # Defining User-specific GLFW3_ROOT
-set(GLFW3_ROOT "C:/Programowanie/C++/libraries")
+set(GLFW3_ROOT "${CMAKE_SOURCE_DIR}/external-dependencies")
 
 set( _glfw3_HEADER_SEARCH_DIRS
         "/usr/include"

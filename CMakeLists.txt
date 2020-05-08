@@ -17,8 +17,9 @@ find_package(GLFW3 REQUIRED)
 message(STATUS "GLFW3 include found at ${GLFW3_INCLUDE_DIR}, ${GLFW3_LIBRARY}, ${GLFW3_FOUND}")
 
 # GLAD
-set(GLAD_INCLUDE_DIR "C:/Programowanie/C++/libraries/include")
-add_library(GLAD "src/glad.c")
+set(GLAD_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external-dependencies/include")
+set(GLAD_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external-dependencies/src")
+add_library(GLAD "${GLAD_SOURCE_DIR}/glad.c")
 
 # Setting include directories
 include_directories("${CMAKE_SOURCE_DIR}/include" "${GLFW3_INCLUDE_DIR}" "${GLAD_INCLUDE_DIR}")
