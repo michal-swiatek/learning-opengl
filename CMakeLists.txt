@@ -33,6 +33,9 @@ target_include_directories(learning_opengl PUBLIC "${PROJECT_BINARY_DIR}")
 
 # Linking
 set(LIBS "${GLFW3_LIBRARY}" opengl32 GLAD)
+
 target_link_libraries(learning_opengl ${LIBS})
+
+add_subdirectory(creating-window)
 
 install(TARGETS learning_opengl DESTINATION C:/Users/PABLICITO/CLionProjects/learning-opengl/bin)
