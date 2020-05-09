@@ -1,2 +1,2 @@
-add_executable(creating_window triangle.cpp)
-target_link_libraries(creating_window ${LIBS})
+add_executable(triangle triangle.cpp)
+target_link_libraries(triangle ${LIBS})
