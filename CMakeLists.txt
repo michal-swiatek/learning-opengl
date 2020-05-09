@@ -42,5 +42,3 @@ set(SHADERS_DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/shaders")
 
 # Rectangle project
 add_subdirectory(rectangle)
-
-install(TARGETS learning_opengl DESTINATION C:/Users/PABLICITO/CLionProjects/learning-opengl/bin)
