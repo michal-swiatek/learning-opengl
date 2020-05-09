@@ -38,52 +38,54 @@ int main(int argc, char** argv) {
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    std::cout << "Setup successful\n";
+
     //
     // Build shaders
     //
 
     //  Vertex shader
-    std::ifstream vertexShaderFile("../shaders/triangle.vs.glsl");
+    std::ifstream vertexShaderFile("../shaders/rectangle.vs.glsl");
     std::stringstream vertexShaderStream;
 
     vertexShaderStream << vertexShaderFile.rdbuf();
     std::string vertexShaderSource = vertexShaderStream.str();
     const char* vertexShaderCode = vertexShaderSource.c_str();
 
-    std::cout << vertexShaderCode << '\n';
+    std::cout << "Vertex shader:\n" << vertexShaderCode << '\n';
 
     uint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderCode, nullptr);
     glCompileShader(vertexShader);
 
     //  Fragment shader
-    std::ifstream fragmentShaderFile("../shaders/triangle.fs.glsl");
+    std::ifstream fragmentShaderFile("../shaders/rectangle.fs.glsl");
     std::stringstream fragmentShaderStream;
 
     fragmentShaderStream << fragmentShaderFile.rdbuf();
     std::string fragmentShaderSource = fragmentShaderStream.str();
     const char* fragmentShaderCode = fragmentShaderSource.c_str();
 
-    std::cout << fragmentShaderCode << '\n';
+    std::cout << "Fragment shader:\n" << fragmentShaderCode << '\n';
 
     uint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderCode, nullptr);
     glCompileShader(fragmentShader);
 
     // Create shader
-    uint triangleShader = glCreateProgram();
+    uint rectangleShader = glCreateProgram();
 
-    glAttachShader(triangleShader, vertexShader);
-    glAttachShader(triangleShader, fragmentShader);
-    glLinkProgram(triangleShader);
+    glAttachShader(rectangleShader, vertexShader);
+    glAttachShader(rectangleShader, fragmentShader);
+    glLinkProgram(rectangleShader);
 
     glDeleteProgram(vertexShader);
     glDeleteProgram(fragmentShader);
 
-    glUseProgram(triangleShader);
+    glUseProgram(rectangleShader);
 
     //
-    // Set up triangle data
+    // Set up rectangle data
     //
     float vertices[] = {
             -0.5f, -0.5f, 0.0f,
@@ -112,7 +114,7 @@ int main(int argc, char** argv) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(triangleShader);
+        glUseProgram(rectangleShader);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 

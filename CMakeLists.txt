@@ -36,6 +36,11 @@ set(LIBS "${GLFW3_LIBRARY}" opengl32 GLAD)
 
 target_link_libraries(learning_opengl ${LIBS})
 
-add_subdirectory(triangle)
+# Adding shaders to build directory
+set(SHADERS_SOURCE "${CMAKE_SOURCE_DIR}/shaders")
+set(SHADERS_DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/shaders")
+
+# Rectangle project
+add_subdirectory(rectangle)
 
 install(TARGETS learning_opengl DESTINATION C:/Users/PABLICITO/CLionProjects/learning-opengl/bin)
