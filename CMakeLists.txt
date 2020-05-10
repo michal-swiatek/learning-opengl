@@ -32,9 +32,9 @@ configure_file(LearningOpenGLConfig.h.in LearningOpenGLConfig.h)
 target_include_directories(learning_opengl PUBLIC "${PROJECT_BINARY_DIR}")
 
 # Linking
-set(LIBS "${GLFW3_LIBRARY}" opengl32 GLAD)
+set(OPENGL_LIBS "${GLFW3_LIBRARY}" opengl32 GLAD)
 
-target_link_libraries(learning_opengl ${LIBS})
+target_link_libraries(learning_opengl ${OPENGL_LIBS})
 
 # Adding shaders to build directory
 set(SHADERS_SOURCE "${CMAKE_SOURCE_DIR}/shaders")
