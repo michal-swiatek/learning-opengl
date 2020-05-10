@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cmath>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -83,8 +84,8 @@ int main(int argc, char** argv) {
     glAttachShader(rectangleShader, fragmentShader);
     glLinkProgram(rectangleShader);
 
-    glDeleteProgram(vertexShader);
-    glDeleteProgram(fragmentShader);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 
     glUseProgram(rectangleShader);
 
@@ -92,10 +93,10 @@ int main(int argc, char** argv) {
     // Set up rectangle data
     //
     float vertices[] = {
-            0.5f,  0.5f, 0.0f,  // top right
-            0.5f, -0.5f, 0.0f,  // bottom right
-            -0.5f, -0.5f, 0.0f,  // bottom left
-            -0.5f,  0.5f, 0.0f   // top left
+            0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f,    // top right
+            0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f,    // bottom right
+            -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f,   // bottom left
+            -0.5f,  0.5f, 0.0f, 0.5f, 0.5f, 1.0f    // top left
     };
 
     uint indices[] = {
@@ -120,8 +121,11 @@ int main(int argc, char** argv) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), reinterpret_cast<void*>(0));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     while(!glfwWindowShouldClose(window))
     {
@@ -132,6 +136,13 @@ int main(int argc, char** argv) {
 
         glUseProgram(rectangleShader);
         glBindVertexArray(VAO);
+
+        // Set uniforms
+        double time = glfwGetTime();
+        float color_scale = (float)sin(time) / 4.0f + 0.75f;
+
+        int color_scale_location = glGetUniformLocation(rectangleShader, "color_scale");
+        glUniform1f(color_scale_location, color_scale);
 
         // glDrawArrays(GL_TRIANGLES, 0, 3);
 

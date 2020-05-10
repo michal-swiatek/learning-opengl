@@ -1,7 +1,10 @@
 #version 330
 
-out vec4 color;
+in vec3 color;
+out vec4 fColor;
+
+uniform float color_scale;
 
 void main() {
-    color = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+    fColor = vec4(color * color_scale, 1.0f);
 }
