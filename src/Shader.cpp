@@ -44,6 +44,10 @@ Shader::Shader(Shader &&other) noexcept
     other.destroyed = true;
 }
 
+/*
+ *  Public
+ */
+
 void Shader::use()
 {
     if (destroyed)
@@ -68,7 +72,30 @@ GLuint Shader::getProgramID() const
     return programID;
 }
 
-std::string Shader::readShaderSource(const char* shaderPath)
+/*
+ *  Uniforms
+ */
+
+void Shader::setBool(const std::string& name, bool value) const
+{
+    glUniform1i(glGetUniformLocation(programID, name.c_str()), static_cast<int>(value));
+}
+
+void Shader::setInt(const std::string& name, int value) const
+{
+    glUniform1i(glGetUniformLocation(programID, name.c_str()), value);
+}
+
+void Shader::setFloat(const std::string& name, float value) const
+{
+    glUniform1i(glGetUniformLocation(programID, name.c_str()), value);
+}
+
+/*
+ *  Private
+ */
+
+std::string Shader::readShaderSource(const char* shaderPath) const
 {
     std::ifstream shaderFile;
     std::stringstream shaderStream;
@@ -89,7 +116,7 @@ std::string Shader::readShaderSource(const char* shaderPath)
     return shaderStream.str();
 }
 
-GLuint Shader::compileShader(GLuint type, const char *shaderCode)
+GLuint Shader::compileShader(GLuint type, const char *shaderCode) const
 {
     GLuint shader = glCreateShader(type);
     glShaderSource(shader, 1, &shaderCode, nullptr);
@@ -111,7 +138,7 @@ GLuint Shader::compileShader(GLuint type, const char *shaderCode)
     return shader;
 }
 
-GLuint Shader::linkProgram(GLuint vertexShader, GLuint fragmentShader, GLuint geometryShader)
+GLuint Shader::linkProgram(GLuint vertexShader, GLuint fragmentShader, GLuint geometryShader) const
 {
     GLuint program = glCreateProgram();
 

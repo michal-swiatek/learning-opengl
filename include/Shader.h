@@ -24,13 +24,18 @@ public:
 
     GLuint getProgramID() const;
 
+    //  Setting uniforms
+    void setBool(const std::string& name, bool value) const;
+    void setInt(const std::string& name, int value) const;
+    void setFloat(const std::string& name, float value) const;
+
 private:
     GLuint programID;
     bool destroyed;
 
-    std::string readShaderSource(const char* shaderPath);
-    GLuint compileShader(GLuint type, const char* shaderCode);
-    GLuint linkProgram(GLuint vertexShader, GLuint fragmentShader, GLuint geometryShader);
+    std::string readShaderSource(const char* shaderPath) const;
+    GLuint compileShader(GLuint type, const char* shaderCode) const;
+    GLuint linkProgram(GLuint vertexShader, GLuint fragmentShader, GLuint geometryShader) const;
 };
 
 #endif //SHADER_H
