@@ -15,7 +15,7 @@ add_custom_command(
 )
 
 # Set debugging directory
-set_target_properties(rectangle PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+set_target_properties(rectangle PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>")
 else()
     add_custom_command(
             TARGET rectangle POST_BUILD
