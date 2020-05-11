@@ -12,6 +12,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "Shader.h"
+
 using uint = unsigned int;
 
 int width = 800;
@@ -49,45 +51,8 @@ int main(int argc, char** argv) {
     // Build shaders
     //
 
-    //  Vertex shader
-    std::ifstream vertexShaderFile("shaders/rectangle.vs.glsl");
-    std::stringstream vertexShaderStream;
-
-    vertexShaderStream << vertexShaderFile.rdbuf();
-    std::string vertexShaderSource = vertexShaderStream.str();
-    const char* vertexShaderCode = vertexShaderSource.c_str();
-
-    std::cout << "Vertex shader:\n" << vertexShaderCode << '\n';
-
-    uint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderCode, nullptr);
-    glCompileShader(vertexShader);
-
-    //  Fragment shader
-    std::ifstream fragmentShaderFile("shaders/rectangle.fs.glsl");
-    std::stringstream fragmentShaderStream;
-
-    fragmentShaderStream << fragmentShaderFile.rdbuf();
-    std::string fragmentShaderSource = fragmentShaderStream.str();
-    const char* fragmentShaderCode = fragmentShaderSource.c_str();
-
-    std::cout << "Fragment shader:\n" << fragmentShaderCode << '\n';
-
-    uint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderCode, nullptr);
-    glCompileShader(fragmentShader);
-
-    // Create shader
-    uint rectangleShader = glCreateProgram();
-
-    glAttachShader(rectangleShader, vertexShader);
-    glAttachShader(rectangleShader, fragmentShader);
-    glLinkProgram(rectangleShader);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    glUseProgram(rectangleShader);
+    Shader rectangleShader("shaders/rectangle.vs.glsl", "shaders/rectangle.fs.glsl");
+    rectangleShader.use();
 
     //
     // Set up rectangle data
@@ -134,15 +99,14 @@ int main(int argc, char** argv) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(rectangleShader);
         glBindVertexArray(VAO);
 
         // Set uniforms
         double time = glfwGetTime();
         float color_scale = (float)sin(time) / 4.0f + 0.75f;
 
-        int color_scale_location = glGetUniformLocation(rectangleShader, "color_scale");
-        glUniform1f(color_scale_location, color_scale);
+        rectangleShader.use();
+        rectangleShader.setFloat("color_scale", color_scale);
 
         // glDrawArrays(GL_TRIANGLES, 0, 3);
 

@@ -1,4 +1,4 @@
-add_executable(rectangle rectangle.cpp)
+add_executable(rectangle rectangle.cpp ${CURRENT_INCLUDE_FILES} ${CURRENT_SRC_FILES})
 target_link_libraries(rectangle ${OPENGL_LIBS})
 
 # Adding shaders to build and executable directory

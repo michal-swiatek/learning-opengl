@@ -18,5 +18,9 @@ message(STATUS "SHADERS_SOURCE set to ${SHADERS_SOURCE}")
 message(STATUS "BUILD_DESTINATION set to ${BUILD_DESTINATION}")
 message(STATUS "RUNTIME_DESTINATION set to ${RUNTIME_DESTINATION}")
 
+# Setting project files
+set(CURRENT_INCLUDE_FILES ${INCLUDE_FILES})
+set(CURRENT_SRC_FILES ${SRC_FILES})
+
 # Rectangle project
 add_subdirectory(rectangle)
