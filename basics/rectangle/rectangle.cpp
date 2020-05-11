@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
     //
 
     //  Vertex shader
-    std::ifstream vertexShaderFile("../shaders/rectangle.vs.glsl");
+    std::ifstream vertexShaderFile("shaders/rectangle.vs.glsl");
     std::stringstream vertexShaderStream;
 
     vertexShaderStream << vertexShaderFile.rdbuf();
@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
     glCompileShader(vertexShader);
 
     //  Fragment shader
-    std::ifstream fragmentShaderFile("../shaders/rectangle.fs.glsl");
+    std::ifstream fragmentShaderFile("shaders/rectangle.fs.glsl");
     std::stringstream fragmentShaderStream;
 
     fragmentShaderStream << fragmentShaderFile.rdbuf();

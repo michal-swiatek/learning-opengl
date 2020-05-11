@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED False)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
 
 # Find external dependencies
 # OpenGL
@@ -14,7 +14,7 @@ find_package(OpenGL REQUIRED)
 
 # GLFW
 find_package(GLFW3 REQUIRED)
-message(STATUS "GLFW3 include found at ${GLFW3_INCLUDE_DIR}, ${GLFW3_LIBRARY}, ${GLFW3_FOUND}")
+message(STATUS  "GLFW3 include found at ${GLFW3_INCLUDE_DIR}, ${GLFW3_LIBRARY}, ${GLFW3_FOUND}")
 
 # GLAD
 set(GLAD_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external-dependencies/include")
@@ -36,9 +36,5 @@ set(OPENGL_LIBS "${GLFW3_LIBRARY}" opengl32 GLAD)
 
 target_link_libraries(learning_opengl ${OPENGL_LIBS})
 
-# Adding shaders to build directory
-set(SHADERS_SOURCE "${CMAKE_SOURCE_DIR}/shaders")
-set(SHADERS_DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/shaders")
-
-# Rectangle project
-add_subdirectory(rectangle)
+# Basics projects
+add_subdirectory(basics)
