@@ -22,10 +22,14 @@ set(GLAD_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external-dependencies/src")
 add_library(GLAD "${GLAD_SOURCE_DIR}/glad.c")
 
 # Setting include directories
-include_directories("${CMAKE_SOURCE_DIR}/include" "${GLFW3_INCLUDE_DIR}" "${GLAD_INCLUDE_DIR}")
+include_directories("${CMAKE_SOURCE_DIR}/include" "${CMAKE_SOURCE_DIR}/src" "${GLFW3_INCLUDE_DIR}" "${GLAD_INCLUDE_DIR}")
+
+# Setting project files
+set(INCLUDE_FILES "${PROJECT_SOURCE_DIR}/include/Shader.h")
+set(SRC_FILES "${PROJECT_SOURCE_DIR}/src/Shader.cpp")
 
 # Create main target
-add_executable(learning_opengl main.cpp)
+add_executable(learning_opengl main.cpp ${INCLUDE_FILES} ${SRC_FILES})
 
 # Project version available only in main project
 configure_file(LearningOpenGLConfig.h.in LearningOpenGLConfig.h)
