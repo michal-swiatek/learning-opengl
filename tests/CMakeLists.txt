@@ -12,4 +12,4 @@ set(CURRENT_INCLUDE_FILES ${INCLUDE_FILES})
 set(CURRENT_SRC_FILES ${SRC_FILES})
 
 # Test external libraries
-add_subdirectory(external_libraries)
+add_subdirectory(external-libraries)
