@@ -40,5 +40,8 @@ set(OPENGL_LIBS "${GLFW3_LIBRARY}" opengl32 GLAD)
 
 target_link_libraries(learning_opengl ${OPENGL_LIBS})
 
-# Basics projects
+# Basics project
 add_subdirectory(basics)
+
+# Tests project
+add_subdirectory(tests)
