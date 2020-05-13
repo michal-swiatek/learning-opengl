@@ -24,3 +24,4 @@ set(CURRENT_SRC_FILES ${SRC_FILES})
 # Add targets
 add_subdirectory(rectangle)
 add_subdirectory(texturing)
+add_subdirectory(transforamtions)
