@@ -11,6 +11,7 @@
 #include <string>
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 class Shader
 {
@@ -24,10 +25,19 @@ public:
 
     GLuint getProgramID() const;
 
+    //
     //  Setting uniforms
+    //
+
+    //  Scalars
     void setBool(const std::string& name, bool value) const;
     void setInt(const std::string& name, int value) const;
     void setFloat(const std::string& name, float value) const;
+
+    //  Matrices
+    void setMatrix2f(const std::string& name, const glm::mat2& matrix) const;
+    void setMatrix3f(const std::string& name, const glm::mat3& matrix) const;
+    void setMatrix4f(const std::string& name, const glm::mat4& matrix) const;
 
 private:
     GLuint programID;

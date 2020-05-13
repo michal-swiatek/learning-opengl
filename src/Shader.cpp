@@ -11,6 +11,8 @@
 #include <iostream>
 #include <exception>
 
+#include <glm/gtc/type_ptr.hpp>
+
 Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath) : destroyed(false)
 {
     //  Read shaders code
@@ -76,6 +78,9 @@ GLuint Shader::getProgramID() const
  *  Uniforms
  */
 
+//
+//  Scalars
+//
 void Shader::setBool(const std::string& name, bool value) const
 {
     glUniform1i(glGetUniformLocation(programID, name.c_str()), static_cast<int>(value));
@@ -89,6 +94,24 @@ void Shader::setInt(const std::string& name, int value) const
 void Shader::setFloat(const std::string& name, float value) const
 {
     glUniform1f(glGetUniformLocation(programID, name.c_str()), value);
+}
+
+//
+//  Matrices
+//
+void Shader::setMatrix2f(const std::string &name, const glm::mat2 &matrix) const
+{
+    glUniformMatrix2fv(glGetUniformLocation(programID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void Shader::setMatrix3f(const std::string &name, const glm::mat3 &matrix) const
+{
+    glUniformMatrix3fv(glGetUniformLocation(programID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void Shader::setMatrix4f(const std::string &name, const glm::mat4 &matrix) const
+{
+    glUniformMatrix4fv(glGetUniformLocation(programID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 /*
