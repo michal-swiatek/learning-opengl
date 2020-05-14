@@ -2,12 +2,7 @@ add_executable(texturing texturing.cpp ${CURRENT_INCLUDE_FILES} ${CURRENT_SRC_FI
 target_link_libraries(texturing ${OPENGL_LIBS})
 
 # Adding shaders to build and executable directory
-add_custom_command(
-        TARGET texturing POST_BUILD
-        COMMAND "${CMAKE_COMMAND}" -E copy_directory "${SHADERS_SOURCE}" "${BUILD_DESTINATION}/shaders"
-        COMMAND "${CMAKE_COMMAND}" -E copy_directory "${SHADERS_SOURCE}" "${RUNTIME_DESTINATION}/shaders"
-        COMMAND "${CMAKE_COMMAND}" -E copy_directory "${RESOURCES_SOURCE}" "${RUNTIME_DESTINATION}/resources"
-)
+COPY_RESOURCES(texturing ${RESOURCES_COPY_COMMAND})
 
 # Set working directory for MS Visual Studio
 if(CMAKE_GENERATOR MATCHES "Visual Studio")
