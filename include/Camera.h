@@ -9,15 +9,15 @@
 
 #include <glm/glm.hpp>
 
-namespace camera {
+namespace cam {
 
     enum class Movement { FORWARD, BACKWARD, RIGHT, LEFT, UP, DOWN };
 
     struct Settings
     {
-        //  Default camera settings
-        static constexpr float MOVEMENT_SPEED = 1.0;
-        static constexpr float ZOOM_SPEED = 1.0;
+        //  Default cam settings
+        static constexpr float MOVEMENT_SPEED = 10.0;
+        static constexpr float ZOOM_SPEED = 0.1;
         static constexpr float SENSITIVITY = 0.1;
         static constexpr float FIELD_OF_VIEW = 45.0;
 
@@ -32,7 +32,7 @@ namespace camera {
     struct Transform
     {
         //  Default Euler angles values
-        static constexpr float YAW = -90.0f;
+        static constexpr float YAW = 0.0f;
         static constexpr float PITCH = 0.0f;
         static constexpr float ROLL = 0.0f;
 
@@ -63,7 +63,7 @@ namespace camera {
     {
     public:
         Camera(const Transform& transform, const glm::vec3& worldUp = Orientation::WORLD_UP);
-        Camera(const glm::vec3& position, const glm::vec3& rotation = Transform::ROTATION, const glm::vec3& worldUp = Orientation::WORLD_UP);
+        Camera(const glm::vec3& position = glm::vec3(0.0), const glm::vec3& rotation = Transform::ROTATION, const glm::vec3& worldUp = Orientation::WORLD_UP);
         Camera(const Settings& settings, const Transform& transform, const glm::vec3& worldUp = Orientation::WORLD_UP);
         virtual ~Camera() = default;
 
