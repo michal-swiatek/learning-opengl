@@ -8,6 +8,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED False)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/$<CONFIG>")
 
+# Define command for copying resources
+set(RESOURCES_COPY_COMMAND copy_directory)
+set(RESOURCES_USE_SYMLINK False CACHE STRING "Copy resources by symlink (symlink might require admin privileges to work) (True or False)" FORCE)
+
+if(RESOURCES_USE_SYMLINK STREQUAL "True")
+    set(RESOURCES_COPY_COMMAND create_symlink)
+endif()
+
 #
 # Find external dependencies
 #
