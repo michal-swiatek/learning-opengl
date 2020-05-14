@@ -32,8 +32,8 @@ float lastTime = 0.0;
 void processInput(GLFWwindow* window);
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void mouse_callback(GLFWwindow* window, double xoffset, double yoffset);
+void scroll_callback(GLFWwindow* window, double xpos, double ypos);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 int main(int argc, char**) {
     glfwInit();
