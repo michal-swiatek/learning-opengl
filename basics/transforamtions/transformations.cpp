@@ -178,7 +178,7 @@ int main(int argc, char**) {
         glBindVertexArray(VAO);
 
         //  Pass transform matrix to shader
-        transformShader.setMatrix4f("transform", transform);
+        transformShader.setMatrix4f("mvp", transform);
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
