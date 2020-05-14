@@ -9,6 +9,8 @@
 
 #include <glm/glm.hpp>
 
+#include "Transform.h"
+
 namespace cam {
 
     enum class Movement { FORWARD, BACKWARD, RIGHT, LEFT, UP, DOWN };
@@ -26,10 +28,10 @@ namespace cam {
         float sensitivity;
         float fov;
 
-        Settings(float movementSpeed = MOVEMENT_SPEED, float zoomSpeed = ZOOM_SPEED, float sensitivity = SENSITIVITY, float fov = FIELD_OF_VIEW);
+        explicit Settings(float movementSpeed = MOVEMENT_SPEED, float zoomSpeed = ZOOM_SPEED, float sensitivity = SENSITIVITY, float fov = FIELD_OF_VIEW);
     };
 
-    struct Transform
+    struct Orientation
     {
         //  Default Euler angles values
         static constexpr float YAW = 0.0f;
@@ -38,16 +40,7 @@ namespace cam {
 
         static constexpr glm::vec3 ROTATION = glm::vec3(-90.0f, 0.0f, 0.0f);
 
-        glm::vec3 position;
-        glm::vec3 rotation;
-
-        Transform(const glm::vec3& cameraPosition, const glm::vec3& cameraRotation = ROTATION);
-        Transform(float x, float y, float z, float yaw = YAW, float pitch = PITCH, float roll = ROLL);
-    };
-
-    struct Orientation
-    {
-        //  Default world dup vector
+        //  Default world up vector
         static constexpr glm::vec3 WORLD_UP = glm::vec3(0.0f, 1.0f, 0.0f);
 
         glm::vec3 front;
@@ -62,30 +55,30 @@ namespace cam {
     class Camera
     {
     public:
-        Camera(const Transform& transform, const glm::vec3& worldUp = Orientation::WORLD_UP);
-        Camera(const glm::vec3& position = glm::vec3(0.0), const glm::vec3& rotation = Transform::ROTATION, const glm::vec3& worldUp = Orientation::WORLD_UP);
+        explicit Camera(const Transform& transform, const glm::vec3& worldUp = Orientation::WORLD_UP);
+        explicit Camera(const glm::vec3& position = glm::vec3(0.0), const glm::vec3& rotation = Orientation::ROTATION, const glm::vec3& worldUp = Orientation::WORLD_UP);
         Camera(const Settings& settings, const Transform& transform, const glm::vec3& worldUp = Orientation::WORLD_UP);
         virtual ~Camera() = default;
 
-        glm::mat4 getViewMatrix() const;
+        [[nodiscard]] glm::mat4 getViewMatrix() const;
 
-        virtual void move(Movement direction, float deltaTime = 1.0);
-        virtual void rotate(float yaw, float pitch, float roll = 0.0);
+        virtual void move(Movement direction, float deltaTime);
+        virtual void rotate(float yaw, float pitch, float roll);
         virtual void zoom(float value);
 
         //  Get
         Settings& getSettings();  //  Reference for easy manipulation
 
-        float getZoom() const;
+        [[nodiscard]] float getZoom() const;
 
-        const Transform& getTransform() const;
-        const Orientation& getOrientation() const;
+        [[nodiscard]] const Transform& getTransform() const;
+        [[nodiscard]] const Orientation& getOrientation() const;
 
         //  Set
         void setZoom(float zoom = Settings::FIELD_OF_VIEW);
 
         void setTransform(const Transform& transform);
-        void setTransform(const glm::vec3& position, const glm::vec3& rotation = Transform::ROTATION);
+        void setTransform(const glm::vec3& position, const glm::vec3& rotation = Orientation::ROTATION);
 
         void setWorldUp(const glm::vec3& worldUp = Orientation::WORLD_UP);
 

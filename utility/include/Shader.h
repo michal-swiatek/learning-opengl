@@ -23,7 +23,7 @@ public:
     void use(); // Activate shader program
     void destroyProgram();
 
-    GLuint getProgramID() const;
+    [[nodiscard]] GLuint getProgramID() const;
 
     //
     //  Setting uniforms

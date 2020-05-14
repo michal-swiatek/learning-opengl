@@ -210,6 +210,9 @@ int main(int argc, char**) {
         deltaTime = glfwGetTime() - lastTime;
         lastTime = glfwGetTime();
 
+        std::string fps = std::to_string(1.0f / deltaTime);
+        glfwSetWindowTitle(window, ("Transformations, fps: " + fps).c_str());
+
         glfwPollEvents();
         processInput(window);
 
@@ -310,5 +313,5 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     lastX = xpos;
     lastY = ypos;
 
-    camera.rotate(xoffset, yoffset);
+    camera.rotate(xoffset, yoffset, 0.0);
 }

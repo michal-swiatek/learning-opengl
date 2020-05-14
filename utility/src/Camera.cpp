@@ -10,10 +10,6 @@
 
 //  Constructors just initialize members
 cam::Settings::Settings(float movementSpeed, float zoomSpeed, float sensitivity, float fov) : movementSpeed(movementSpeed), zoomSpeed(zoomSpeed), sensitivity(sensitivity), fov(fov) { }
-
-cam::Transform::Transform(const glm::vec3 &cameraPosition, const glm::vec3 &cameraRotation) : position(cameraPosition), rotation(cameraRotation) { }
-cam::Transform::Transform(float x, float y, float z, float yaw, float pitch, float roll) : position(glm::vec3(x, y, z)), rotation(glm::vec3(yaw, pitch, roll)) { }
-
 cam::Orientation::Orientation(const glm::vec3 &worldUp) : worldUp(worldUp) { }
 
 //
@@ -22,7 +18,7 @@ cam::Orientation::Orientation(const glm::vec3 &worldUp) : worldUp(worldUp) { }
 
 //  Constructors initialize members and call updateOrientation()
 cam::Camera::Camera(const Transform &transform, const glm::vec3 &worldUp) : transform(transform), orientation(cam::Orientation(worldUp)) { updateOrientation(); }
-cam::Camera::Camera(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &worldUp) : transform(cam::Transform(position, rotation)), orientation(cam::Orientation(worldUp)) { updateOrientation(); }
+cam::Camera::Camera(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &worldUp) : transform(Transform(position, rotation)), orientation(cam::Orientation(worldUp)) { updateOrientation(); }
 cam::Camera::Camera(const Settings &settings, const Transform &transform, const glm::vec3 &worldUp) : settings(settings), transform(transform), orientation(cam::Orientation(worldUp)) { updateOrientation(); }
 
 glm::mat4 cam::Camera::getViewMatrix() const
@@ -35,12 +31,12 @@ void cam::Camera::move(Movement direction, float deltaTime)
     float velocity = settings.movementSpeed * deltaTime;
 
     switch (direction) {
-        case cam::Movement::FORWARD: transform.position += velocity * orientation.front;   break;
-        case cam::Movement::BACKWARD: transform.position -= velocity * orientation.front;   break;
-        case cam::Movement::RIGHT: transform.position += velocity * orientation.right;   break;
-        case cam::Movement::LEFT: transform.position -= velocity * orientation.right;   break;
-        case cam::Movement::UP: transform.position += velocity * orientation.up;      break;
-        case cam::Movement::DOWN: transform.position -= velocity * orientation.up;      break;
+        case cam::Movement::FORWARD:    transform.position += velocity * orientation.front;     break;
+        case cam::Movement::BACKWARD:   transform.position -= velocity * orientation.front;     break;
+        case cam::Movement::RIGHT:      transform.position += velocity * orientation.right;     break;
+        case cam::Movement::LEFT:       transform.position -= velocity * orientation.right;     break;
+        case cam::Movement::UP:         transform.position += velocity * orientation.up;        break;
+        case cam::Movement::DOWN:       transform.position -= velocity * orientation.up;        break;
     }
 }
 
@@ -93,7 +89,7 @@ cam::Settings& cam::Camera::getSettings()  { return settings; }
 
 float cam::Camera::getZoom() const { return settings.fov; }
 
-const cam::Transform& cam::Camera::getTransform() const { return transform; }
+const Transform& cam::Camera::getTransform() const { return transform; }
 const cam::Orientation& cam::Camera::getOrientation() const { return orientation; }
 
 //
@@ -103,6 +99,6 @@ const cam::Orientation& cam::Camera::getOrientation() const { return orientation
 void cam::Camera::setZoom(float zoom) { settings.fov = zoom; }
 
 void cam::Camera::setTransform(const Transform &transform) { this->transform = transform; }
-void cam::Camera::setTransform(const glm::vec3 &position, const glm::vec3 &rotation) { this->transform = cam::Transform(position, rotation); }
+void cam::Camera::setTransform(const glm::vec3 &position, const glm::vec3 &rotation) { this->transform = Transform(position, rotation); }
 
 void cam::Camera::setWorldUp(const glm::vec3 &worldUp) { orientation.worldUp = worldUp; }
