@@ -53,8 +53,8 @@ add_library(STB_IMAGE "${STB_IMAGE_SOURCE_DIR}/stb_image.cpp")
 include_directories("${CMAKE_SOURCE_DIR}/include" "${GLFW3_INCLUDE_DIR}" "${GLM_INCLUDE_DIRS}" "${GLAD_INCLUDE_DIR}" "${STB_IMAGE_INCLUDE_DIR}")
 
 # Setting project files
-set(INCLUDE_FILES "${PROJECT_SOURCE_DIR}/include/Shader.h")
-set(SRC_FILES "${PROJECT_SOURCE_DIR}/src/Shader.cpp")
+set(INCLUDE_FILES "${PROJECT_SOURCE_DIR}/include/Shader.h" "${PROJECT_SOURCE_DIR}/include/Camera.h")
+set(SRC_FILES "${PROJECT_SOURCE_DIR}/src/Shader.cpp" "${PROJECT_SOURCE_DIR}/src/Camera.cpp")
 
 #
 # Create main target
