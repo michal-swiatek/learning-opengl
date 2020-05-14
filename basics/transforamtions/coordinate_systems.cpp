@@ -14,6 +14,7 @@
 #include "stb_image/stb_image.h"
 
 #include "Shader.h"
+#include "Camera.h"
 
 using uint = unsigned int;
 using uchar = unsigned char;
@@ -23,8 +24,16 @@ const int HEIGHT = 900;
 
 const float ANGLE_STEP = 3.0;
 
+cam::Camera camera;
+
+float deltaTime = 0.0;
+float lastTime = 0.0;
+
 void processInput(GLFWwindow* window);
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void mouse_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 int main(int argc, char**) {
     glfwInit();
@@ -49,6 +58,9 @@ int main(int argc, char**) {
     }
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+
     std::cout << "Setup successful\n";
 
     //  Preparing scene
@@ -182,17 +194,6 @@ int main(int argc, char**) {
         std::cerr << "Failed to load awesomeface image\n";
     stbi_image_free(texture_data);
 
-    //
-    //  Setup view and projection matrix
-    //
-    glm::mat4 view = glm::mat4(1.0f);
-    view = glm::translate(view, glm::vec3(2.0, 0.0, -5.0));
-    view = glm::rotate(view, glm::radians(30.0f), glm::vec3(0.0, 1.0, 0.0));
-
-    glm::mat4 projection = glm::perspective(45.0f, (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
-
-    glm::mat4 vp = projection * view;
-
     //  Setup shader uniforms
     transformShader.use();
 
@@ -200,11 +201,15 @@ int main(int argc, char**) {
     transformShader.setInt("texture1", 0);
     transformShader.setInt("texture2", 1);
 
-    //  Setup OpenGL settings
+    //  Setup rendering settings
     glEnable(GL_DEPTH_TEST);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     while (!glfwWindowShouldClose(window))
     {
+        deltaTime = glfwGetTime() - lastTime;
+        lastTime = glfwGetTime();
+
         glfwPollEvents();
         processInput(window);
 
@@ -218,6 +223,11 @@ int main(int argc, char**) {
         glBindTexture(GL_TEXTURE_2D, textures[0]);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, textures[1]);
+
+        glm::mat4 view = camera.getViewMatrix();
+        glm::mat4 projection = glm::perspective(camera.getZoom(), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+
+        glm::mat4 vp = projection * view;
 
         transformShader.use();
         glBindVertexArray(VAO);
@@ -245,9 +255,60 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    //  Camera control
+
+    //  Speed
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        camera.getSettings().movementSpeed = 20.0;
+    else
+        camera.getSettings().movementSpeed = 10.0;
+
+    //  Movement direction
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.move(cam::Movement::FORWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.move(cam::Movement::BACKWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.move(cam::Movement::RIGHT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.move(cam::Movement::LEFT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        camera.move(cam::Movement::UP, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        camera.move(cam::Movement::DOWN, deltaTime);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+}
+
+void scroll_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    camera.zoom(ypos);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    static bool firstMouse = true;
+
+    static double lastX = WIDTH / 2;
+    static double lastY = HEIGHT / 2;
+
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos;   //  Reversed because y-coordinates range from bottom to top
+
+    lastX = xpos;
+    lastY = ypos;
+
+    camera.rotate(xoffset, yoffset);
 }
