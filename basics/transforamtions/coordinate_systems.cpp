@@ -136,10 +136,11 @@ int main(int argc, char**) {
     glGenBuffers(1, &VBO);
     glGenVertexArrays(1, &VAO);
 
-    glBindVertexArray(VAO);
-
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(0));
     glEnableVertexAttribArray(0);
@@ -204,13 +205,14 @@ int main(int argc, char**) {
     //  Setup rendering settings
     glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //glfwSwapInterval(0);
 
     while (!glfwWindowShouldClose(window))
     {
         deltaTime = glfwGetTime() - lastTime;
         lastTime = glfwGetTime();
 
-        std::string fps = std::to_string(1.0f / deltaTime);
+        std::string fps = std::to_string(int(1.0f / deltaTime));
         glfwSetWindowTitle(window, ("Transformations, fps: " + fps).c_str());
 
         glfwPollEvents();
@@ -262,24 +264,25 @@ void processInput(GLFWwindow* window)
     //  Camera control
 
     //  Speed
+    cam::Speed cameraSpeed = cam::Speed::NORMAL;
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        camera.getSettings().movementSpeed = 20.0;
-    else
-        camera.getSettings().movementSpeed = 10.0;
+        cameraSpeed = cam::Speed::FAST;
+    else if (glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
+        cameraSpeed = cam::Speed::SLOW;
 
     //  Movement direction
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.move(cam::Movement::FORWARD, deltaTime);
+        camera.move(cam::Direction::FORWARD, cameraSpeed, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.move(cam::Movement::BACKWARD, deltaTime);
+        camera.move(cam::Direction::BACKWARD, cameraSpeed, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.move(cam::Movement::RIGHT, deltaTime);
+        camera.move(cam::Direction::RIGHT, cameraSpeed, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.move(cam::Movement::LEFT, deltaTime);
+        camera.move(cam::Direction::LEFT, cameraSpeed, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        camera.move(cam::Movement::UP, deltaTime);
+        camera.move(cam::Direction::UP, cameraSpeed, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-        camera.move(cam::Movement::DOWN, deltaTime);
+        camera.move(cam::Direction::DOWN, cameraSpeed, deltaTime);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)

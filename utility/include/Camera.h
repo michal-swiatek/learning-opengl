@@ -13,7 +13,8 @@
 
 namespace cam {
 
-    enum class Movement { FORWARD, BACKWARD, RIGHT, LEFT, UP, DOWN };
+    enum class Direction { FORWARD, BACKWARD, RIGHT, LEFT, UP, DOWN };
+    enum class Speed { NORMAL, FAST, SLOW };
 
     struct Settings
     {
@@ -38,7 +39,7 @@ namespace cam {
         static constexpr float PITCH = 0.0f;
         static constexpr float ROLL = 0.0f;
 
-        static constexpr glm::vec3 ROTATION = glm::vec3(-90.0f, 0.0f, 0.0f);
+        static constexpr glm::vec4 ROTATION = glm::vec4(0.0f, 1.0f, 0.0f, -90.0f);
 
         //  Default world up vector
         static constexpr glm::vec3 WORLD_UP = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -56,13 +57,13 @@ namespace cam {
     {
     public:
         explicit Camera(const Transform& transform, const glm::vec3& worldUp = Orientation::WORLD_UP);
-        explicit Camera(const glm::vec3& position = glm::vec3(0.0), const glm::vec3& rotation = Orientation::ROTATION, const glm::vec3& worldUp = Orientation::WORLD_UP);
+        explicit Camera(const glm::vec3& position = glm::vec3(0.0), const glm::vec4& rotation = Orientation::ROTATION, const glm::vec3& worldUp = Orientation::WORLD_UP);
         Camera(const Settings& settings, const Transform& transform, const glm::vec3& worldUp = Orientation::WORLD_UP);
         virtual ~Camera() = default;
 
         [[nodiscard]] glm::mat4 getViewMatrix() const;
 
-        virtual void move(Movement direction, float deltaTime);
+        virtual void move(Direction direction, Speed speed, float deltaTime);
         virtual void rotate(float yaw, float pitch, float roll);
         virtual void zoom(float value);
 
@@ -78,7 +79,7 @@ namespace cam {
         void setZoom(float zoom = Settings::FIELD_OF_VIEW);
 
         void setTransform(const Transform& transform);
-        void setTransform(const glm::vec3& position, const glm::vec3& rotation = Orientation::ROTATION);
+        void setTransform(const glm::vec3& position, const glm::vec4& rotation = Orientation::ROTATION);
 
         void setWorldUp(const glm::vec3& worldUp = Orientation::WORLD_UP);
 
