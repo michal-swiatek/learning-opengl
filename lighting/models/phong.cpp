@@ -70,7 +70,7 @@ int main(int argc, char**) {
     //
     //  Setup shaders
     //
-    Shader boxShader("shaders/box.vs.glsl", "shaders/box.fs.glsl");
+    Shader lightShader("shaders/light.vs.glsl", "shaders/light.fs.glsl");
 
     //  Setup rendering settings
     glEnable(GL_DEPTH_TEST);
@@ -95,11 +95,10 @@ int main(int argc, char**) {
         glm::mat4 view = camera.getViewMatrix();
         glm::mat4 projection = glm::perspective(camera.getZoom(), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 
-        boxShader.use();
-        boxShader.setMatrix4f("view", view);
-        boxShader.setMatrix4f("projection", projection);
+        lightShader.use();
 
-        b1.draw(boxShader);
+        b1.updateMatrices(projection);
+        b1.draw(lightShader, view);
 
         glfwSwapBuffers(window);
     }
