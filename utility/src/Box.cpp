@@ -15,49 +15,49 @@ uint32_t Box::VBO = 0;
 uint32_t Box::VAO = 0;
 
 float vertices[] = {
-        // positions          // texture coords
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f,   1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,   1.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,   1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+        //  Position          //  Normals           //  TexCoords
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,   0.0f, 0.0f,
+        0.5f,  -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,   1.0f, 0.0f,
+        0.5f,   0.5f, -0.5f,  0.0f,  0.0f, -1.0f,   1.0f, 1.0f,
+        0.5f,   0.5f, -0.5f,  0.0f,  0.0f, -1.0f,   1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,   0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,   0.0f, 0.0f,
 
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,   1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,   1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,   1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,    0.0f, 0.0f,
+        0.5f,  -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,    1.0f, 0.0f,
+        0.5f,   0.5f,  0.5f,  0.0f,  0.0f, 1.0f,    1.0f, 1.0f,
+        0.5f,   0.5f,  0.5f,  0.0f,  0.0f, 1.0f,    1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,    0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,    0.0f, 0.0f,
 
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,   1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,   0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
 
-        0.5f,  0.5f,  0.5f,   1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,   1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,   0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,   0.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,   0.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,   1.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,   1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
+        0.5f,  0.5f, -0.5f,   1.0f,  0.0f,  0.0f,   1.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,   1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,   1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
+        0.5f, -0.5f,  0.5f,   1.0f,  0.0f,  0.0f,   0.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,   1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
 
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,   1.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,   1.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,   1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,   0.0f, 1.0f,
+        0.5f,  -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,   1.0f, 1.0f,
+        0.5f,  -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,   1.0f, 0.0f,
+        0.5f,  -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,   1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,   0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,   0.0f, 1.0f,
 
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,   1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,   1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,   1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-};
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,   0.0f, 1.0f,
+        0.5f,   0.5f, -0.5f,  0.0f,  1.0f,  0.0f,   1.0f, 1.0f,
+        0.5f,   0.5f,  0.5f,  0.0f,  1.0f,  0.0f,   1.0f, 0.0f,
+        0.5f,   0.5f,  0.5f,  0.0f,  1.0f,  0.0f,   1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,   0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,   0.0f, 1.0f
+    };
 
 Box::Box(const Transform& transform, const glm::vec4& color) : transform(transform), color(color)
 {
@@ -71,55 +71,75 @@ Box::Box(const glm::vec3 &position, const glm::vec4 &rotation, const glm::vec3 &
     init();
 }
 
-void Box::draw(const Shader& shader, bool use_color) const
+void Box::updateMatrices(const OptionalMat4 &projection)
 {
-    glBindVertexArray(VAO);
+    if (projection)
+        projectionMatrix = *projection;
 
     //  Calculate model matrix
-    glm::mat4 model(1.0f);
-    model = glm::translate(model, transform.position);
+    modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, transform.position);
     if (transform.rotation.w != 0.0)
-        model = glm::rotate(model, glm::radians(transform.rotation.w), glm::xyz(transform.rotation));
-    model = glm::scale(model, transform.scale);
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(transform.rotation.w), glm::xyz(transform.rotation));
+    modelMatrix = glm::scale(modelMatrix, transform.scale);
+}
+
+void Box::draw(const Shader& shader, const glm::mat4& view, bool use_color) const
+{
+    glBindVertexArray(VAO);
 
     //  Set uniforms
     shader.setBool("use_color", use_color);
     shader.setVector4f("color", color);
-    shader.setMatrix4f("model", model);
+
+    shader.setMatrix4f("mv", view * modelMatrix);
+    shader.setMatrix4f("mvp", projectionMatrix * view * modelMatrix);
 
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
     glBindVertexArray(0);
 }
 
-void Box::translate(const glm::vec3& offset)
+void Box::translate(const glm::vec3& offset, bool updateModel)
 {
     transform.position += offset;
+    if (updateModel)
+        updateMatrices();
 }
 
-void Box::rotate(float angle)
+void Box::rotate(float angle, bool updateModel)
 {
     transform.rotation.w += angle;
+    if (updateModel)
+        updateMatrices();
 }
 
-void Box::scale(const glm::vec3 &value)
+void Box::scale(const glm::vec3 &value, bool updateModel)
 {
     transform.scale *= value;
+    if (updateModel)
+        updateMatrices();
 }
 
-void Box::setPosition(const glm::vec3 &position)
+void Box::setPosition(const glm::vec3 &position, bool updateModel)
 {
     transform.position = position;
+    if (updateModel)
+        updateMatrices();
 }
 
-void Box::setRotation(const glm::vec4 &rotation)
+void Box::setRotation(const glm::vec4 &rotation, bool updateModel)
 {
     transform.rotation = rotation;
+    if (updateModel)
+        updateMatrices();
 }
 
-void Box::setScale(const glm::vec3 &scale)
+void Box::setScale(const glm::vec3 &scale, bool updateModel)
 {
     transform.scale = scale;
+    if (updateModel)
+        updateMatrices();
 }
 
 //  Transform
@@ -128,9 +148,11 @@ const Transform& Box::getTransform() const
     return transform;
 }
 
-void Box::setTransform(const Transform& newTransform)
+void Box::setTransform(const Transform& newTransform, bool updateModel)
 {
     transform = newTransform;
+    if (updateModel)
+        updateMatrices();
 }
 
 //  Color
@@ -168,11 +190,14 @@ void Box::init()
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(0));
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(0));
         glEnableVertexAttribArray(0);
 
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
         glEnableVertexAttribArray(1);
+
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        glEnableVertexAttribArray(2);
 
         glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
