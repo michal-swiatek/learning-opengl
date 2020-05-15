@@ -17,3 +17,4 @@ include(utility/utility.cmake)
 add_subdirectory(tests)
 
 add_subdirectory(basics)
+add_subdirectory(lighting)
