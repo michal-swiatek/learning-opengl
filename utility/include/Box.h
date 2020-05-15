@@ -17,7 +17,7 @@ class Box
 {
 public:
     explicit Box(const Transform& transform, const glm::vec4& color = glm::vec4(1.0f));
-    explicit Box(const glm::vec3& position, const glm::vec4& rotation = glm::vec4(0.0), const glm::vec3& scale = glm::vec3(1.0f), const glm::vec4& color = glm::vec4(1.0f));
+    explicit Box(const glm::vec3& position = glm::vec3(0.0f), const glm::vec4& rotation = glm::vec4(0.0), const glm::vec3& scale = glm::vec3(1.0f), const glm::vec4& color = glm::vec4(1.0f));
 
     void draw(const Shader& shader, bool use_color = true) const;
 

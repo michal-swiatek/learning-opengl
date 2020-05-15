@@ -73,17 +73,23 @@ Box::Box(const glm::vec3 &position, const glm::vec4 &rotation, const glm::vec3 &
 
 void Box::draw(const Shader& shader, bool use_color) const
 {
+    glBindVertexArray(VAO);
+
     //  Calculate model matrix
     glm::mat4 model(1.0f);
     model = glm::translate(model, transform.position);
-    model = glm::rotate(model, glm::radians(transform.rotation.w), glm::xyz(transform.rotation));
+    if (transform.rotation.w != 0.0)
+        model = glm::rotate(model, glm::radians(transform.rotation.w), glm::xyz(transform.rotation));
     model = glm::scale(model, transform.scale);
 
     //  Set uniforms
     shader.setBool("use_color", use_color);
+    shader.setVector4f("color", color);
     shader.setMatrix4f("model", model);
 
     glDrawArrays(GL_TRIANGLES, 0, 36);
+
+    glBindVertexArray(0);
 }
 
 void Box::translate(const glm::vec3& offset)
