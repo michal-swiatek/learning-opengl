@@ -178,6 +178,11 @@ const glm::mat4& Box::getModelMatrix() const
     return modelMatrix;
 }
 
+void Box::setModelMatrix(const glm::mat4 &newModelMatrix)
+{
+    modelMatrix = newModelMatrix;
+}
+
 //  Color
 const glm::vec4& Box::getColor() const
 {

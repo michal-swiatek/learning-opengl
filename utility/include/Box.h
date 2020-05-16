@@ -38,6 +38,7 @@ public:
     void setTransform(const Transform& newTransform);
 
     [[nodiscard]] const glm::mat4& getModelMatrix() const;
+    void setModelMatrix(const glm::mat4& newModelMatrix);
 
     //  Color
     [[nodiscard]] const glm::vec4& getColor() const;
