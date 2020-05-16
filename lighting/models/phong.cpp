@@ -65,12 +65,18 @@ int main(int argc, char**) {
     //
     //  Setup scene
     //
-    Box b1(Transform(), glm::vec4(1.0f, 0.3f, 0.5f, 1.0f));
+    Box light(Transform(glm::vec3(2.0f, 3.0f, 3.0f), glm::vec3(1.0f), glm::vec3(0.3f)), glm::vec4(1.0f));
+
+    Box box(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec4(1.0f, 0.5f, 0.3f, 1.0f));
 
     //
     //  Setup shaders
     //
     Shader lightShader("shaders/light.vs.glsl", "shaders/light.fs.glsl");
+    Shader boxShader("shaders/phong_view.vs.glsl", "shaders/phong_view.fs.glsl");
+
+    boxShader.use();
+    boxShader.setVector3f("lightColor", glm::vec3(light.getColor()));
 
     //  Setup rendering settings
     glEnable(GL_DEPTH_TEST);
@@ -97,8 +103,16 @@ int main(int argc, char**) {
 
         lightShader.use();
 
-        b1.updateMatrices(projection);
-        b1.draw(lightShader, view);
+        light.updateMatrices(projection);
+        light.draw(lightShader, view);
+
+        boxShader.use();
+
+        boxShader.setVector3f("lightPos", glm::vec3(view * glm::vec4(light.getTransform().position, 1.0f)));
+        boxShader.setInt("shininess", 128);
+
+        box.updateMatrices(projection);
+        box.draw(boxShader, view);
 
         glfwSwapBuffers(window);
     }

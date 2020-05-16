@@ -61,8 +61,6 @@ int main(int argc, char**) {
     glfwSetScrollCallback(window, scroll_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
 
-    std::cout << "Setup successful\n";
-
     //  Preparing scene
     float angle = 0.0;
 

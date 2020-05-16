@@ -18,7 +18,7 @@ cam::Orientation::Orientation(const glm::vec3 &worldUp) : worldUp(worldUp) { }
 
 //  Constructors initialize members and call updateOrientation()
 cam::Camera::Camera(const Transform &transform, const glm::vec3 &worldUp) : transform(transform), orientation(cam::Orientation(worldUp)) { updateOrientation(); }
-cam::Camera::Camera(const glm::vec3 &position, const glm::vec4 &rotation, const glm::vec3 &worldUp) : transform(Transform(position, rotation)), orientation(cam::Orientation(worldUp)) { updateOrientation(); }
+cam::Camera::Camera(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &worldUp) : transform(Transform(position, rotation)), orientation(cam::Orientation(worldUp)) { updateOrientation(); }
 cam::Camera::Camera(const Settings &settings, const Transform &transform, const glm::vec3 &worldUp) : settings(settings), transform(transform), orientation(cam::Orientation(worldUp)) { updateOrientation(); }
 
 glm::mat4 cam::Camera::getViewMatrix() const
@@ -105,6 +105,6 @@ const cam::Orientation& cam::Camera::getOrientation() const { return orientation
 void cam::Camera::setZoom(float zoom) { settings.fov = zoom; }
 
 void cam::Camera::setTransform(const Transform &transform) { this->transform = transform; }
-void cam::Camera::setTransform(const glm::vec3 &position, const glm::vec4 &rotation) { this->transform = Transform(position, rotation); }
+void cam::Camera::setTransform(const glm::vec3 &position, const glm::vec3 &rotation) { this->transform = Transform(position, rotation); }
 
 void cam::Camera::setWorldUp(const glm::vec3 &worldUp) { orientation.worldUp = worldUp; }

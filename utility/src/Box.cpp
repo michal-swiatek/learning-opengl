@@ -62,26 +62,25 @@ float vertices[] = {
 Box::Box(const Transform& transform, const glm::vec4& color) : transform(transform), color(color)
 {
     init();
+
+    modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, transform.position);
+    modelMatrix = glm::scale(modelMatrix, transform.scale);
 }
 
-Box::Box(const glm::vec3 &position, const glm::vec4 &rotation, const glm::vec3 &scale, const glm::vec4 &color) : color(color)
+Box::Box(const glm::vec3 &position, const glm::vec4 &color) : transform(Transform(position)), color(color)
 {
-    transform = Transform(position, rotation, scale);
-
     init();
+
+    modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, transform.position);
+    modelMatrix = glm::scale(modelMatrix, transform.scale);
 }
 
 void Box::updateMatrices(const OptionalMat4 &projection)
 {
     if (projection)
         projectionMatrix = *projection;
-
-    //  Calculate model matrix
-    modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::translate(modelMatrix, transform.position);
-    if (transform.rotation.w != 0.0)
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(transform.rotation.w), glm::xyz(transform.rotation));
-    modelMatrix = glm::scale(modelMatrix, transform.scale);
 }
 
 void Box::draw(const Shader& shader, const glm::mat4& view, bool use_color) const
@@ -90,56 +89,73 @@ void Box::draw(const Shader& shader, const glm::mat4& view, bool use_color) cons
 
     //  Set uniforms
     shader.setBool("use_color", use_color);
-    shader.setVector4f("color", color);
+    shader.setVector3f("diffuseColor", glm::vec3(color));
+    shader.setVector3f("specularColor", 0.5f * glm::vec3(color));
 
-    shader.setMatrix4f("mv", view * modelMatrix);
-    shader.setMatrix4f("mvp", projectionMatrix * view * modelMatrix);
+    glm::mat4 mv = view * modelMatrix;
+    shader.setMatrix4f("mv", mv);
+    shader.setMatrix4f("mvp", projectionMatrix * mv);
+    shader.setMatrix3f("mvInvTrans", glm::mat3(glm::transpose(glm::inverse(view * modelMatrix))));
 
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
     glBindVertexArray(0);
 }
 
-void Box::translate(const glm::vec3& offset, bool updateModel)
+void Box::translate(const glm::vec3& offset)
 {
     transform.position += offset;
-    if (updateModel)
-        updateMatrices();
+
+    modelMatrix = glm::translate(modelMatrix, offset);
 }
 
-void Box::rotate(float angle, bool updateModel)
+void Box::rotate(float angle, const std::optional<glm::vec3>& axis)
 {
-    transform.rotation.w += angle;
-    if (updateModel)
-        updateMatrices();
+    if (axis)
+        transform.rotation = *axis;
+
+    modelMatrix = glm::translate(modelMatrix, transform.position);
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), transform.rotation);
+    modelMatrix = glm::translate(modelMatrix, -transform.position);
 }
 
-void Box::scale(const glm::vec3 &value, bool updateModel)
+void Box::scale(const glm::vec3 &value)
 {
     transform.scale *= value;
-    if (updateModel)
-        updateMatrices();
+
+    modelMatrix = glm::translate(modelMatrix, transform.position);
+    modelMatrix = glm::scale(modelMatrix, value);
+    modelMatrix = glm::translate(modelMatrix, -transform.position);
 }
 
-void Box::setPosition(const glm::vec3 &position, bool updateModel)
+void Box::setPosition(const glm::vec3 &position)
 {
+    modelMatrix = glm::translate(modelMatrix, -transform.position);
     transform.position = position;
-    if (updateModel)
-        updateMatrices();
+    modelMatrix = glm::translate(modelMatrix, transform.position);
 }
 
-void Box::setRotation(const glm::vec4 &rotation, bool updateModel)
+void Box::setRotation(float angle, const glm::vec3 &axis)
 {
-    transform.rotation = rotation;
-    if (updateModel)
-        updateMatrices();
+    transform.rotation = axis;
+
+    modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, transform.position);
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), transform.rotation);
+    modelMatrix = glm::scale(modelMatrix, transform.scale);
 }
 
-void Box::setScale(const glm::vec3 &scale, bool updateModel)
+void Box::setScale(const glm::vec3 &scale)
 {
+    modelMatrix = glm::translate(modelMatrix, transform.position);
+    modelMatrix = glm::scale(modelMatrix, scale);
+    modelMatrix = glm::translate(modelMatrix, -transform.position);
+
     transform.scale = scale;
-    if (updateModel)
-        updateMatrices();
+
+    modelMatrix = glm::translate(modelMatrix, transform.position);
+    modelMatrix = glm::scale(modelMatrix, scale);
+    modelMatrix = glm::translate(modelMatrix, -transform.position);
 }
 
 //  Transform
@@ -148,11 +164,18 @@ const Transform& Box::getTransform() const
     return transform;
 }
 
-void Box::setTransform(const Transform& newTransform, bool updateModel)
+void Box::setTransform(const Transform& newTransform)
 {
     transform = newTransform;
-    if (updateModel)
-        updateMatrices();
+
+    modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, transform.position);
+    modelMatrix = glm::scale(modelMatrix, transform.scale);
+}
+
+const glm::mat4& Box::getModelMatrix() const
+{
+    return modelMatrix;
 }
 
 //  Color
