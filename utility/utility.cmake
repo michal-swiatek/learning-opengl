@@ -9,14 +9,14 @@ set(UTILITY_INCLUDE_FILES
         "${UTILITY_PATH}/include/Transform.h"
         "${UTILITY_PATH}/include/Box.h"
         "${UTILITY_PATH}/include/Cylinder.h"
-        #"${UTILITY_PATH}/include/Window.h"
-        #"${UTILITY_PATH}/include/OpenGLApp.h"
+        "${UTILITY_PATH}/include/Window.h"
+        "${UTILITY_PATH}/include/OpenGLApp.h"
         )
 
 set(UTILITY_SRC_FILES
         "${UTILITY_PATH}/src/Shader.cpp"
         "${UTILITY_PATH}/src/Camera.cpp"
         "${UTILITY_PATH}/src/Box.cpp"
-        #"${UTILITY_PATH}/src/Window.cpp"
-        #"${UTILITY_PATH}/src/OpenGLApp.cpp"
+        "${UTILITY_PATH}/src/Window.cpp"
+        "${UTILITY_PATH}/src/OpenGLApp.cpp"
         )
