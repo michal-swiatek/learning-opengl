@@ -27,6 +27,8 @@ public:
     void initApp(uint32_t width = 1280, uint32_t height = 720, bool fullscreen = false, bool showCursor = true);
     void run();
 
+    static cam::Camera& getMainCamera();
+
 protected:
     //  User Interface
     virtual void updateInput();
@@ -41,12 +43,14 @@ protected:
     //virtual void saveConfig(const char* path);
 
     std::unique_ptr<Window> mainWindow;
-    cam::Camera mainCamera;
+    cam::Camera& camera = mainCamera;
 
     double deltaTime;
     double lastTime;
     uint32_t framesCounter;
     float framesPerSecond;
+
+    static cam::Camera mainCamera;
 
 private:
     uint32_t appVersionMajor;
