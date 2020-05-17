@@ -28,3 +28,4 @@ set(CURRENT_SRC_FILES ${UTILITY_SRC_FILES})
 
 # Add targets
 add_subdirectory(box_gif)
+add_subdirectory(test)
