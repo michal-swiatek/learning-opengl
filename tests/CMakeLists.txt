@@ -11,3 +11,4 @@ set(CURRENT_SRC_FILES ${UTILITY_SRC_FILES})
 
 # Test external libraries
 add_subdirectory(external-libraries)
+add_subdirectory(general)
