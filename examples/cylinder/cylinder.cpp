@@ -29,7 +29,7 @@ public:
 
     void init() override
     {
-        cylinder = std::make_unique<Cylinder>(0.5, 0.5, 10.0, 30, 30);
+        cylinder = std::make_unique<Cylinder>(5.0, 5.0, 10.0, 30, 2);
 
         glGenBuffers(1, &VBO);
         glGenVertexArrays(1, &VAO);
@@ -77,6 +77,13 @@ public:
         cylinderShader->setMatrix3f("mvInvTrans", glm::mat3(glm::transpose(glm::inverse(view))));
 
         glBindVertexArray(VAO);
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glViewport(0, 0, WIDTH / 2, HEIGHT);
+        glDrawElements(GL_TRIANGLES, cylinder->indices.size(), GL_UNSIGNED_INT, 0);
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glViewport(WIDTH / 2, 0, WIDTH / 2, HEIGHT);
         glDrawElements(GL_TRIANGLES, cylinder->indices.size(), GL_UNSIGNED_INT, 0);
     }
 };
