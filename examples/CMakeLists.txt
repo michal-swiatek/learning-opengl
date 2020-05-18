@@ -27,5 +27,4 @@ set(CURRENT_INCLUDE_FILES ${UTILITY_INCLUDE_FILES})
 set(CURRENT_SRC_FILES ${UTILITY_SRC_FILES})
 
 # Add targets
-add_subdirectory(box_gif)
-add_subdirectory(cylinder)
+include(loadExamples.cmake)

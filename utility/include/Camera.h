@@ -7,6 +7,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <optional>
+
 #include <glm/glm.hpp>
 
 #include "Transform.h"
@@ -23,13 +25,15 @@ namespace cam {
         static constexpr float ZOOM_SPEED = 0.1;
         static constexpr float SENSITIVITY = 0.1;
         static constexpr float FIELD_OF_VIEW = 45.0;
+        static constexpr float ASPECT_RATIO = 4.0 / 3.0;
 
         float movementSpeed;
         float zoomSpeed;
         float sensitivity;
         float fov;
+        float aspectRatio;
 
-        explicit Settings(float movementSpeed = MOVEMENT_SPEED, float zoomSpeed = ZOOM_SPEED, float sensitivity = SENSITIVITY, float fov = FIELD_OF_VIEW);
+        explicit Settings(float movementSpeed = MOVEMENT_SPEED, float zoomSpeed = ZOOM_SPEED, float sensitivity = SENSITIVITY, float fov = FIELD_OF_VIEW, float aspectRatio = ASPECT_RATIO);
     };
 
     struct Orientation
@@ -62,6 +66,8 @@ namespace cam {
         virtual ~Camera() = default;
 
         [[nodiscard]] glm::mat4 getViewMatrix() const;
+        [[nodiscard]] glm::mat4 getProjectionMatrix() const;
+        [[nodiscard]] glm::mat4 getViewProjectionMatrix() const;
 
         virtual void move(Direction direction, Speed speed, float deltaTime);
         virtual void rotate(float yaw, float pitch, float roll);

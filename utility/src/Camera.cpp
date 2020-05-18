@@ -9,7 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 //  Constructors just initialize members
-cam::Settings::Settings(float movementSpeed, float zoomSpeed, float sensitivity, float fov) : movementSpeed(movementSpeed), zoomSpeed(zoomSpeed), sensitivity(sensitivity), fov(fov) { }
+cam::Settings::Settings(float movementSpeed, float zoomSpeed, float sensitivity, float fov, float aspectRatio) : movementSpeed(movementSpeed), zoomSpeed(zoomSpeed), sensitivity(sensitivity), fov(fov), aspectRatio(aspectRatio) { }
 cam::Orientation::Orientation(const glm::vec3 &worldUp) : worldUp(worldUp) { }
 
 //
@@ -24,6 +24,16 @@ cam::Camera::Camera(const Settings &settings, const Transform &transform, const 
 glm::mat4 cam::Camera::getViewMatrix() const
 {
     return glm::lookAt(transform.position, transform.position + orientation.front, orientation.up);
+}
+
+glm::mat4 cam::Camera::getProjectionMatrix() const
+{
+    return glm::perspective(settings.fov, settings.aspectRatio, 0.1f, 100.0f);
+}
+
+glm::mat4 cam::Camera::getViewProjectionMatrix() const
+{
+    return getProjectionMatrix() * getViewMatrix();
 }
 
 void cam::Camera::move(Direction direction, Speed speed, float deltaTime)

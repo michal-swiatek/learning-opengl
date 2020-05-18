@@ -22,19 +22,23 @@ OpenGLApp::OpenGLApp(std::string&& name, uint32_t appVersionMajor, uint32_t appV
     lastTime = deltaTime = 0.0;
     framesCounter = 0;
     framesPerSecond = 0.0;
-}
 
-void OpenGLApp::initApp(uint32_t width, uint32_t height, bool fullscreen, bool showCursor)
-{
     //  Initialize OpenGL and GLFW
     if (glfwInit() == GLFW_FALSE)
         throw std::runtime_error("Failed to initialize GLFW!\n");
 
-    WindowSettings settings(width, height, windowTitle.c_str(), fullscreen, showCursor);
-    mainWindow = std::make_unique<Window>(settings);
+    mainWindow = std::make_unique<Window>(WindowSettings(600, 400, "OpenGLApp"));
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         throw std::runtime_error("Failed to initialize GLAD!\n");
+}
 
+void OpenGLApp::initApp(uint32_t width, uint32_t height, bool fullscreen, bool showCursor)
+{
+    //  Customize window
+    glfwSetWindowTitle(mainWindow->getWindow(), windowTitle.c_str());
+    glfwSetWindowSize(mainWindow->getWindow(), width, height);
+    if (fullscreen)
+        glfwSetWindowMonitor(mainWindow->getWindow(), glfwGetPrimaryMonitor(), 0, 0, width, height, 60);
     if (!showCursor)
         glfwSetInputMode(mainWindow->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
