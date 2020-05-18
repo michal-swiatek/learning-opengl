@@ -18,6 +18,9 @@ private:
     static const int gridSize = 50;
     static constexpr float gridResolution = 1.0f;
 
+    bool wireframe = false;
+    bool paused = false;
+
     std::unique_ptr<Shader> gridShader;
 
     float isovalue = 1.0f;
@@ -35,7 +38,7 @@ public:
         for (int i = 0; i < metaballsAmount; ++i)
         {
             r.emplace_back(rand() % 50, rand() % 50, rand() % 50);
-            v.emplace_back(rand() % 10 - 5, rand() % 10 - 5, rand() % 10 - 5);
+            v.emplace_back(rand() % 20 - 10, rand() % 20 - 10, rand() % 20 - 10);
         }
     }
 
@@ -57,10 +60,18 @@ public:
             coefficient += 5.0 * deltaTime;
         if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_Z) == GLFW_PRESS)
             coefficient -= 5.0 * deltaTime;
+
+        if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_X) == GLFW_PRESS)
+            wireframe = !wireframe;
+        if (glfwGetKey(mainWindow->getWindow(), GLFW_KEY_P) == GLFW_PRESS)
+            paused = !paused;
     }
 
     void updateLogic() override
     {
+        if (paused)
+            return;
+
         for (int i = 0; i < metaballsAmount; ++i)
         {
             r[i] += v[i] * float(deltaTime);
@@ -120,8 +131,11 @@ public:
         gridShader->use();
         gridShader->setVector3f("diffuseColor", glm::vec3(1.0f));
 
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         isosurface.drawGrid(gridShader.get(), camera);
+
+        if (!wireframe)
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         gridShader->setVector3f("diffuseColor", glm::vec3(1.0f, 0.0f, 0.0f));
         isosurface.drawIsosurface(gridShader.get(), camera);

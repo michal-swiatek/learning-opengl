@@ -60,7 +60,6 @@ Isosurface::Isosurface(int32_t gridSize, float gridResolution) : gridSize(gridSi
 
 void Isosurface::drawGrid(Shader *shader, const cam::Camera &camera)
 {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     gridBounds.updateMatrices(camera.getProjectionMatrix());
     gridBounds.draw(*shader, camera.getViewMatrix());
 
@@ -80,7 +79,6 @@ void Isosurface::drawIsosurface(Shader *shader, const cam::Camera &camera)
     model = glm::translate(model, glm::vec3(-(gridSize * gridResolution) / 2));
     shader->setMatrix4f("mvp", camera.getViewProjectionMatrix() * model);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glBindVertexArray(isosurfaceVAO);
     glDrawArrays(GL_TRIANGLES, 0, isosurface.size());
 }
