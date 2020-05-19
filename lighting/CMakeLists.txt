@@ -30,3 +30,4 @@ set(CURRENT_SRC_FILES ${UTILITY_SRC_FILES})
 
 # Add targets
 add_subdirectory(models)
+add_subdirectory(multiple_lights)
