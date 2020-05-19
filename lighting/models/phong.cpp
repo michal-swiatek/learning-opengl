@@ -13,6 +13,7 @@
 
 #include "Shader.h"
 #include "Camera.h"
+#include "Material.h"
 
 #include "Transform.h"
 #include "Box.h"
@@ -30,9 +31,9 @@ float lastTime = 0.0;
 
 void processInput(GLFWwindow* window);
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void scroll_callback(GLFWwindow* window, double xpos, double ypos);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void framebuffer_size_callback1(GLFWwindow* window, int width, int height);
+void scroll_callback1(GLFWwindow* window, double xpos, double ypos);
+void mouse_callback1(GLFWwindow* window, double xpos, double ypos);
 
 int main(int argc, char**) {
     glfwInit();
@@ -56,17 +57,18 @@ int main(int argc, char**) {
         return -1;
     }
 
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetScrollCallback(window, scroll_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback1);
+    glfwSetScrollCallback(window, scroll_callback1);
+    glfwSetCursorPosCallback(window, mouse_callback1);
 
     std::cout << "Setup successful\n";
 
     //
     //  Setup scene
     //
-    Box light(Transform(glm::vec3(2.0f, 3.0f, 3.0f), glm::vec3(1.0f), glm::vec3(0.3f)), glm::vec4(1.0f));
+    PhongMaterial boxMaterial(glm::vec4(1.0f, 0.5f, 0.3f, 1.0f));
 
+    Box light(Transform(glm::vec3(2.0f, 3.0f, 3.0f), glm::vec3(1.0f), glm::vec3(0.3f)), glm::vec4(1.0f));
     Box box(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec4(1.0f, 0.5f, 0.3f, 1.0f));
 
     //
@@ -76,12 +78,16 @@ int main(int argc, char**) {
     Shader boxShader("shaders/phong_view.vs.glsl", "shaders/phong_view.fs.glsl");
 
     boxShader.use();
-    boxShader.setVector3f("lightColor", glm::vec3(light.getColor()));
+    boxShader.setVector3f("light.ambient", glm::vec3(0.1f));
+    boxShader.setVector3f("light.diffuse", glm::vec3(light.getColor()));
+    boxShader.setVector3f("light.specular", glm::vec3(1.0f));
 
     //  Setup rendering settings
     glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     //glfwSwapInterval(0);
+
+    camera.getSettings().movementSpeed /= 2;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -108,8 +114,10 @@ int main(int argc, char**) {
 
         boxShader.use();
 
-        boxShader.setVector3f("lightPos", glm::vec3(view * glm::vec4(light.getTransform().position, 1.0f)));
-        boxShader.setInt("shininess", 128);
+        boxMaterial.applyMaterial(boxShader);
+
+        boxShader.setVector4f("light.position", view * glm::vec4(light.getTransform().position, 1.0f));
+        boxShader.setFloat("material.shininess", 1.0f);
 
         box.updateMatrices(projection);
         box.draw(boxShader, view);
@@ -149,17 +157,17 @@ void processInput(GLFWwindow* window)
         camera.move(cam::Direction::DOWN, cameraSpeed, deltaTime);
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback1(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
 
-void scroll_callback(GLFWwindow* window, double xpos, double ypos)
+void scroll_callback1(GLFWwindow* window, double xpos, double ypos)
 {
     camera.zoom(ypos);
 }
 
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouse_callback1(GLFWwindow* window, double xpos, double ypos)
 {
     static bool firstMouse = true;
 
