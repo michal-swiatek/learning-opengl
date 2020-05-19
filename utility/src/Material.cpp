@@ -14,7 +14,7 @@
 
 bool has_suffix(const std::string &str, const std::string &suffix);     // Helper function
 
-PhongMaterial::PhongMaterial(Color diffuse, Color specular, uint32_t shininess)
+PhongMaterial::PhongMaterial(Color diffuse, Color specular, float shininess)
 {
     setAmbient(diffuse);    //  By default same as diffuse (lighting control ambient)
     setDiffuse(diffuse);
@@ -22,7 +22,7 @@ PhongMaterial::PhongMaterial(Color diffuse, Color specular, uint32_t shininess)
     setShininess(shininess);
 }
 
-PhongMaterial::PhongMaterial(const char *diffuseMap, const char *specularMap, uint32_t shininess)
+PhongMaterial::PhongMaterial(const char *diffuseMap, const char *specularMap, float shininess)
 {
     setAmbient(diffuseMap); //  By default same as diffuse (lighting control ambient)
     setDiffuse(diffuseMap);
@@ -37,7 +37,7 @@ void PhongMaterial::applyMaterial(const Shader &shader)
     shader.setInt("material.ambient", 0);
     shader.setInt("material.diffuse", 1);
     shader.setInt("material.specular", 2);
-    shader.setInt("material.shininess", material.shininess);
+    shader.setFloat("material.shininess", material.shininess);
 
     //  Prepare textures
     glActiveTexture(GL_TEXTURE0);
@@ -92,7 +92,7 @@ void PhongMaterial::setSpecular(const char* specularMap)
     material.specular = loadTexture(specularMap);
 }
 
-void PhongMaterial::setShininess(uint32_t value)
+void PhongMaterial::setShininess(float value)
 {
     material.shininess = value;
 }

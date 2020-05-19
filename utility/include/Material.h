@@ -20,7 +20,7 @@ struct Material
     uint32_t diffuse = 0;
     uint32_t specular = 0;
 
-    uint32_t shininess = 32;
+    float shininess = 32;
 };
 
 class PhongMaterial
@@ -29,8 +29,8 @@ public:
     using Color = glm::vec4;
 
 public:
-    explicit PhongMaterial(Color diffuse = Color(1.0f), Color specular = Color(0.5f, 0.5f, 0.5f, 1.0f), uint32_t shininess = 32);
-    explicit PhongMaterial(const char* diffuseMap, const char* specularMap, uint32_t shininess = 32);
+    explicit PhongMaterial(Color diffuse = Color(1.0f), Color specular = Color(0.5f, 0.5f, 0.5f, 1.0f), float shininess = 0.25);
+    explicit PhongMaterial(const char* diffuseMap, const char* specularMap, float shininess = 0.25);
 
     //  Setup shader
     void applyMaterial(const Shader& shader);
@@ -49,7 +49,7 @@ public:
     void setDiffuse(const char* diffuseMap);
     void setSpecular(const char* specularMap);
 
-    void setShininess(uint32_t value = 32);
+    void setShininess(float value = 32);
 
     //  Access underlying material struct
     [[nodiscard]] const Material& getMaterial() const;
