@@ -19,6 +19,7 @@
 #include "Window.h"
 #include "Camera.h"
 #include "Shader.h"
+#include "Material.h"
 
 class OpenGLApp
 {
