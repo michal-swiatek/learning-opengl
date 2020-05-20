@@ -1,5 +1,5 @@
 /*
- *  Created by michal-swiatek on 15.05.2020, based on Joey de Vries tutorials.
+ *  Created by michal-swiatek on 20.05.2020, based on Joey de Vries tutorials.
  *  Github: https://github.com/michal-swiatek/learning-opengl
  *  LearnOpenGL tutorial: https://learnopengl.com/Introduction
  */
@@ -66,7 +66,8 @@ int main(int argc, char**) {
     //
     //  Setup scene
     //
-    PhongMaterial boxMaterial(glm::vec4(1.0f, 0.5f, 0.3f, 1.0f));
+    //PhongMaterial boxMaterial(glm::vec4(1.0f, 0.5f, 0.3f, 1.0f));
+    PhongMaterial boxMaterial("resources/container2_diffuse.png", "resources/container2_specular.png", 0.5f);
 
     Box light(Transform(glm::vec3(2.0f, 3.0f, 3.0f), glm::vec3(1.0f), glm::vec3(0.3f)), glm::vec4(1.0f));
     Box box(glm::vec3(0.0f, 0.0f, -2.0f), glm::vec4(1.0f, 0.5f, 0.3f, 1.0f));
@@ -116,8 +117,13 @@ int main(int argc, char**) {
 
         boxMaterial.applyMaterial(boxShader);
 
+        boxShader.setMatrix4f("model", box.getModelMatrix());
+        boxShader.setMatrix3f("modelInvTrans", glm::mat3(glm::transpose(glm::inverse(box.getModelMatrix()))));
+
         boxShader.setVector4f("light.position", view * glm::vec4(light.getTransform().position, 1.0f));
         boxShader.setFloat("material.shininess", 1.0f);
+
+        boxShader.setVector3f("eyePos", camera.getTransform().position);
 
         box.updateMatrices(projection);
         box.draw(boxShader, view);
