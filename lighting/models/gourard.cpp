@@ -76,7 +76,7 @@ int main(int argc, char**) {
     //  Setup shaders
     //
     Shader lightShader("shaders/light.vs.glsl", "shaders/light.fs.glsl");
-    Shader boxShader("shaders/gourard.vs.glsl", "shaders/gourard.fs.glsl");
+    Shader boxShader("shaders/gourard_view.vs.glsl", "shaders/gourard_view.fs.glsl");
 
     boxShader.use();
     boxShader.setVector3f("light.ambient", glm::vec3(0.1f));
